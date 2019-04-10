@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const Joi = require("joi");
-const user = require("./user");
+const mongoose = require('mongoose');
+const Joi = require('joi');
+const user = require('./user');
 
 const personalDetailSchema = new mongoose.Schema({
   user: {
@@ -45,7 +45,7 @@ function personalDetailValidator(personalDetail) {
       .max(99999),
     sex: Joi.string()
       .required()
-      .valid(["male", "female", "other"]),
+      .valid(['male', 'female', 'other']),
     countryCode: Joi.number()
       .required()
       .integer()
@@ -64,14 +64,15 @@ function personalDetailValidator(personalDetail) {
       .max(255)
       .required(),
     dateOfBirth: Joi.date()
-      .min("1900-09-28")
+      .min('1900-09-28')
       .max(Date.now())
-      .required()
+      .required(),
+    userId: Joi.string()
   };
 
   return Joi.validate(personalDetail, schema);
 }
-const PersonalDetail = mongoose.model("PersonalDetail", personalDetailSchema);
+const PersonalDetail = mongoose.model('PersonalDetail', personalDetailSchema);
 module.exports = {
   PersonalDetail,
   personalDetailSchema,
@@ -79,17 +80,17 @@ module.exports = {
 };
 /*
 { 
-    name: "dhiraj",
-    streetAddress:"kilonrinne 10 D 76" ,
-    city: "Espoo",
-    state: "Uusimaa",
+    name: 'dhiraj',
+    streetAddress:'kilonrinne 10 D 76' ,
+    city: 'Espoo',
+    state: 'Uusimaa',
     zipCode: 02610,
-    sex: "male"
+    sex: 'male'
     countryCode: 358,
     phoneNumber: 0469553614,
-    citizenship: "Nepal",
+    citizenship: 'Nepal',
     socialSecurityNumber: 666778333,
-    dateOfBirth:"1991-09-28"
+    dateOfBirth:'1991-09-28'
   };
 
 
