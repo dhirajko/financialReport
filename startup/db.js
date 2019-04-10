@@ -1,5 +1,8 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 
 const dbConnection = () => {
   mongoose.connect(process.env.DB_URI,{ useNewUrlParser: true })
@@ -7,7 +10,7 @@ const dbConnection = () => {
   })
   .catch((err)=>{
       console.log(err);
-      g
+      
   }
   )
 };

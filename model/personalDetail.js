@@ -1,77 +1,23 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
-const user = require("./User");
+const user = require("./user");
 
 const personalDetailSchema = new mongoose.Schema({
   user: {
     type: user,
     required: true
   },
-  name: {
-    type: String,
-    required: true,
-    minlength: 1,
-    maxlength: 255
-  },
-  streetAddress: {
-    type: String,
-    required: true,
-    minlength: 1,
-    maxlength: 255
-  },
-  city: {
-    type: String,
-    required: true,
-    minlength: 5,
-    maxlength: 255
-  },
-  state: {
-    type: String,
-    required: true,
-    minlength: 5,
-    maxlength: 255
-  },
-  zipCode: {
-    type: Number,
-    required: true,
-    min: 10000,
-    max: 99999
-  },
-  sex: {
-    type: String,
-    enum: ["male", "female", "other"],
-    required: true
-  },
-  countryCode: {
-    type: Number,
-    required: true,
-    min: 1,
-    max: 999
-  },
-  phoneNumber: {
-    type: Number,
-    required: true,
-    minlength: 5,
-    maxlength: 255
-  },
-  citizenship: {
-    type: String,
-    required: true,
-    minlength: 5,
-    maxlength: 255
-  },
-  socialSecurityNumber: {
-    type: String,
-    required: true,
-    minlength: 5,
-    maxlength: 255
-  },
-  dateOfBirth: {
-    type: Date,
-    required: true,
-    min: "1900-09-28",
-    max: Date.now()
-  }
+  name: String,
+  streetAddress: String,
+  city: String,
+  state: String,
+  zipCode: Number,
+  sex: String,
+  countryCode: Number,
+  phoneNumber: String,
+  citizenship: String,
+  socialSecurityNumber: String,
+  dateOfBirth: Date
 });
 function personalDetailValidator(personalDetail) {
   schema = {
@@ -86,7 +32,6 @@ function personalDetailValidator(personalDetail) {
     city: Joi.string()
       .min(1)
       .max(255)
-      .required()
       .required(),
     state: Joi.string()
       .required()
@@ -106,11 +51,10 @@ function personalDetailValidator(personalDetail) {
       .integer()
       .min(1)
       .max(999),
-    phoneNumber: Joi.number()
+    phoneNumber: Joi.string()
       .required()
-      .integer()
-      .minlength(10)
-      .max(9999999999),
+      .min(10)
+      .max(10),
     citizenship: Joi.string()
       .min(1)
       .max(255)
