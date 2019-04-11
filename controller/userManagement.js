@@ -8,8 +8,7 @@ router.post("/change-active-status/:id", async (req, res) => {
   const { error } = validator(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  if (!req.body.isActive)
-    return res.status(412).send("No status send");
+  if (!req.body.isActive) return res.status(412).send("No status send");
 
   const user = await User.findByIdAndUpdate(
     req.params.id,
@@ -47,37 +46,36 @@ router.post("/change-password/:id", async (req, res) => {
 });
 
 router.post("/change-staff-status/:id", async (req, res) => {
-    const { error } = validator(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-  
-    if (!req.body.isStaff)
-      return res.status(412).send("No staff  status send ");
-  
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { isActive: req.body.isStaff },
-      { new: true }
-    );
-    if (!user)
-      return res.status(404).send(" The user with given id is not found");
-    res.send(user);
-  });
-  router.post("/change-admin-status/:id", async (req, res) => {
-    const { error } = validator(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-  
-    if (!req.body.isAdmin)
-      return res.status(412).send("No staff  status send ");
-  
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { isActive: req.body.isAdmin },
-      { new: true }
-    );
-    if (!user)
-      return res.status(404).send(" The user with given id is not found");
-    res.send(user);
-  });
+  const { error } = validator(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  if (!req.body.isStaff) return res.status(412).send("No staff  status send ");
+
+  const user = await User.findByIdAndUpdate(
+    req.params.id,
+    { isStaff: req.body.isStaff },
+    { new: true }
+  );
+  if (!user)
+    return res.status(404).send(" The user with given id is not found");
+  res.send(user);
+});
+
+router.post("/change-admin-status/:id", async (req, res) => {
+  const { error } = validator(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  if (!req.body.isAdmin) return res.status(412).send("No staff  status send ");
+
+  const user = await User.findByIdAndUpdate(
+    req.params.id,
+    { isAdmin: req.body.isAdmin },
+    { new: true }
+  );
+  if (!user)
+    return res.status(404).send(" The user with given id is not found");
+  res.send(user);
+});
 
 function validator(user) {
   const schema = {
