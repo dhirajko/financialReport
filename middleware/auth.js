@@ -5,9 +5,11 @@ function auth(req, res, next) {
     if (!token) res.status(401).send('Assess denied. No token provied')
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY); 
-        console.log(decoded);
-           
+        const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
+        if(parseInt(Date.now()>decoded.expireTime)){
+            return res.status(400).send('Expired Token')
+        }
+        decoded.expireTime= parseInt(Date.now())+900000;             
         req.user = decoded;
         next();
 

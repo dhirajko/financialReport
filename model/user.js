@@ -3,7 +3,7 @@ const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
-  email: String,
+  username: String,
   password: String,
   isAdmin: Boolean,
   isStaff: Boolean,
@@ -11,13 +11,15 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.generateAuthToken = function() {
+  const expireTime=parseInt(Date.now())
   const token = jwt.sign(
     {
       _id: this._id,
       isAdmin: this.isAdmin,
-      email: this.email,
+      username: this.username,
       isStaff: this.isStaff,
-      isActive: this.isActive
+      isActive: this.isActive,
+      expireTime: expireTime
     },
     process.env.JWT_PRIVATE_KEY
   );
@@ -26,11 +28,11 @@ userSchema.methods.generateAuthToken = function() {
 
 function validateUser(user) {
   const schema = {
-    email: Joi.string()
+    username: Joi.string()
       .min(3)
       .max(255)
-      .required()
-      .email(),
+      .required(),
+      
     password: Joi.string()
       .min(3)
       .max(1024)

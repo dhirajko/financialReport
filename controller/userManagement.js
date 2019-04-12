@@ -7,7 +7,6 @@ const bcrypt = require("bcryptjs");
 router.post("/change-active-status/:id", async (req, res) => {
   const { error } = validator(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-
   if (!req.body.isActive) return res.status(412).send("No status send");
 
   const user = await User.findByIdAndUpdate(

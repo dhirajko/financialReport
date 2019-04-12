@@ -1,10 +1,12 @@
-const mongoose = require('mongoose');
-const Joi = require('joi');
-const user = require('./user');
+const mongoose = require("mongoose");
+const Joi = require("joi");
+const { userSchema } = require("./user");
 
 const personalDetailSchema = new mongoose.Schema({
   user: {
-    type: user,
+    type: new mongoose.Schema({
+      username: String
+    }),
     required: true
   },
   name: String,
@@ -15,6 +17,7 @@ const personalDetailSchema = new mongoose.Schema({
   sex: String,
   countryCode: Number,
   phoneNumber: String,
+  email: String,
   citizenship: String,
   socialSecurityNumber: String,
   dateOfBirth: Date
@@ -45,7 +48,7 @@ function personalDetailValidator(personalDetail) {
       .max(99999),
     sex: Joi.string()
       .required()
-      .valid(['male', 'female', 'other']),
+      .valid(["male", "female", "other"]),
     countryCode: Joi.number()
       .required()
       .integer()
@@ -55,6 +58,9 @@ function personalDetailValidator(personalDetail) {
       .required()
       .min(10)
       .max(10),
+    email: Joi.string()
+      .required()
+      .email(),
     citizenship: Joi.string()
       .min(1)
       .max(255)
@@ -64,7 +70,7 @@ function personalDetailValidator(personalDetail) {
       .max(255)
       .required(),
     dateOfBirth: Joi.date()
-      .min('1900-09-28')
+      .min("1900-09-28")
       .max(Date.now())
       .required(),
     userId: Joi.string()
@@ -72,7 +78,7 @@ function personalDetailValidator(personalDetail) {
 
   return Joi.validate(personalDetail, schema);
 }
-const PersonalDetail = mongoose.model('PersonalDetail', personalDetailSchema);
+const PersonalDetail = mongoose.model("PersonalDetail", personalDetailSchema);
 module.exports = {
   PersonalDetail,
   personalDetailSchema,
