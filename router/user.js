@@ -2,34 +2,27 @@ const experss = require("express");
 const router = experss.Router();
 const _ = require("lodash");
 const bcrypt = require("bcryptjs");
-const { validateUser, User } = require("../model/user");
-const auth=require('../middleware/auth')
-const moment=require('moment')
+const { passWordValidator, validateUser, User } = require("../model/user");
+const auth = require('../middleware/auth')
+const moment = require('moment')
 
-router.get("/", async(req, res) => {
-  
-  
-  console.log(parseInt(Date.now())+900000+" : "+Date.now());
-  
-  const users = await User.find({}).select(["-password"]);
-  const payload = users.map(user => {
-    //return _.pick(user, ['_id', 'username','isActive']);
-    return user;
-  });
-  res.send(payload);
-});
-
-router.get("/:id", async (req, res) => {
-  const user = await User.findById(req.params.id).select([
-    "_id",
-    "username",
-    "isActive"
-  ]);
-  if (!user)
-    return res.status(404).send(" The customer with given id is not found");
-
+router.get("/", auth, async (req, res) => {
+  const user = await User.findOne({ _id: req.user._id }).select(['-_id', 'username', 'isActive']);
   res.send(user);
 });
+
+// router.get("/:id",auth, async (req, res) => {
+//   const user = await User.findById(req.params.id).select([
+//     "_id",
+//     "username",
+//     "isActive"
+//   ]);
+
+//   if (!user)
+//     return res.status(404).send(" The customer with given id is not found");
+
+//   res.send(user);
+// });
 
 router.post("/", async (req, res) => {
   const { error } = validateUser(req.body);
@@ -54,6 +47,26 @@ router.post("/", async (req, res) => {
     .send(_.pick(user, ["_id", "username", "isActive"]));
 });
 
+router.put("/",auth, async (req, res) => {
+  const { error } = passWordValidator(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  let user = await User.findOne({ username: req.user.username });
+  if (!user) return res.status(404).send("user not found");
+
+  const validPassword = await bcrypt.compare(req.body.oldPassword, user.password);
+  if (!validPassword)
+    return res.status(400).send("incorrect password");
+  const salt= await bcrypt.genSalt(10)
+  newHashedPassword = await bcrypt.hash(req.body.newPassword, salt);
+
+  user.password=newHashedPassword
+  await user.save()
+  res.status(200).send('password changed')
+});
+
+
+
 router.delete("/:id", async (req, res) => {
   const user = await User.findByIdAndRemove(req.params.id);
   if (!user)
@@ -63,5 +76,8 @@ router.delete("/:id", async (req, res) => {
   const responseData = _.pick(user, ["username"]);
   res.send(responseData);
 });
+
+
+
 
 module.exports = router;

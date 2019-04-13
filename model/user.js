@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 
+
 const userSchema = new mongoose.Schema({
   username: String,
   password: String,
@@ -10,8 +11,8 @@ const userSchema = new mongoose.Schema({
   isActive: Boolean
 });
 
-userSchema.methods.generateAuthToken = function() {
-  const expireTime=parseInt(Date.now())
+userSchema.methods.generateAuthToken = function () {
+  const expireTime = Date.now() + 900000;
   const token = jwt.sign(
     {
       _id: this._id,
@@ -32,7 +33,7 @@ function validateUser(user) {
       .min(3)
       .max(255)
       .required(),
-      
+
     password: Joi.string()
       .min(3)
       .max(1024)
@@ -43,8 +44,24 @@ function validateUser(user) {
   };
   return Joi.validate(user, schema);
 }
+
+function passWordValidator(password) {
+  const schema = {
+    newPassword: Joi.string()
+      .min(3)
+      .max(1024)
+      .required(),
+    oldPassword: Joi.string()
+      .min(3)
+      .max(1024)
+      .required()
+  };
+  return Joi.validate(password, schema);
+}
+
+
 const User = mongoose.model('User', userSchema);
 
-module.exports = { userSchema, validateUser, User };
+module.exports = { userSchema, passWordValidator, validateUser, User };
 
 
