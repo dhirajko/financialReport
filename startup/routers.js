@@ -5,10 +5,15 @@ const login=require('../controller/login')
 
 
 function routers(app) {
+  app.use('/api/login',login)
+
+  //user related api
   app.use('/api/user', user);
   app.use('/api/personaldetail', personalDetail);
+
+  //management related api
   app.use('/api/user-management',userMangement)
-  app.use('/api/login',login)
+  
   
 }
 

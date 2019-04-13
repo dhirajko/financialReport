@@ -78,14 +78,55 @@ function personalDetailValidator(personalDetail) {
 
   return Joi.validate(personalDetail, schema);
 }
+function dataValidator(data) {
+  schema = {
+    name: Joi.string()
+      .min(1)
+      .max(255),
+    streetAddress: Joi.string()
+      .min(1)
+      .max(255),
+    city: Joi.string()
+      .min(1)
+      .max(255),
+    state: Joi.string()
+      .min(1)
+      .max(255),
+    zipCode: Joi.number()
+      .integer()
+      .min(10000)
+      .max(99999),
+    sex: Joi.string().valid(["male", "female", "other"]),
+    countryCode: Joi.number()
+      .integer()
+      .min(1)
+      .max(999),
+    phoneNumber: Joi.string()
+      .min(10)
+      .max(10),
+    email: Joi.string().email(),
+    citizenship: Joi.string()
+      .min(1)
+      .max(255),
+    socialSecurityNumber: Joi.string()
+      .min(1)
+      .max(255),
+    dateOfBirth: Joi.date()
+      .min("1900-09-28")
+      .max(Date.now())
+  };
+  return Joi.validate(data, schema);
+}
+
+
 const PersonalDetail = mongoose.model("PersonalDetail", personalDetailSchema);
 module.exports = {
   PersonalDetail,
   personalDetailSchema,
-  personalDetailValidator
+  personalDetailValidator, dataValidator
 };
 /*
-{ 
+{
     name: 'dhiraj',
     streetAddress:'kilonrinne 10 D 76' ,
     city: 'Espoo',

@@ -8,7 +8,7 @@ function auth(req, res, next) {
     try {
         const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
         console.log(Date.now()-decoded.expireTime);            
-        if(Date.now()>decoded.expireTime){
+        if(!(Date.now()<decoded.expireTime)){
             return res.status(440).send('The token has expired')
         }
         const expireTime=Date.now()+900000;    

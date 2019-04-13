@@ -2,14 +2,15 @@ const experss = require("express");
 const router = experss.Router();
 const Joi = require("joi");
 const {
+  dataValidator,
   PersonalDetail,
   personalDetailValidator
 } = require("../model/personalDetail");
+const _ = require('lodash')
 const auth = require("../middleware/auth");
 
 router.get("/", auth, async (req, res) => {
-  req.user = { _id: "5cb068997bb1e813fe2fc21d", username: "sample" };
-  const personalDetail = await PersonalDetail.find({});
+  const personalDetail = await PersonalDetail.findOne({ "user._id": req.user._id });
   res.send(personalDetail);
 });
 
@@ -19,6 +20,7 @@ router.post("/", auth, async (req, res) => {
   let personalDetail = await PersonalDetail.findOne({
     "user._id": req.user._id
   });
+    
   if (personalDetail) return res.status(200).send(personalDetail);
   const payload = {
     ...req.body,
@@ -27,9 +29,12 @@ router.post("/", auth, async (req, res) => {
       username: req.user.username
     }
   };
+  console.log('I am here');
+  
   personalDetail = new PersonalDetail(payload);
   await personalDetail.save();
-  res.send(personalDetail);
+  
+  res.status(201).send(personalDetail);
 });
 
 router.put("/", auth, async (req, res) => {
@@ -54,43 +59,5 @@ router.delete("/", auth, async (req, res) => {
   res.send(personalDetail);
 });
 
-function dataValidator(data) {
-  schema = {
-    name: Joi.string()
-      .min(1)
-      .max(255),
-    streetAddress: Joi.string()
-      .min(1)
-      .max(255),
-    city: Joi.string()
-      .min(1)
-      .max(255),
-    state: Joi.string()
-      .min(1)
-      .max(255),
-    zipCode: Joi.number()
-      .integer()
-      .min(10000)
-      .max(99999),
-    sex: Joi.string().valid(["male", "female", "other"]),
-    countryCode: Joi.number()
-      .integer()
-      .min(1)
-      .max(999),
-    phoneNumber: Joi.string()
-      .min(10)
-      .max(10),
-    email: Joi.string().email(),
-    citizenship: Joi.string()
-      .min(1)
-      .max(255),
-    socialSecurityNumber: Joi.string()
-      .min(1)
-      .max(255),
-    dateOfBirth: Joi.date()
-      .min("1900-09-28")
-      .max(Date.now())
-  };
-  return Joi.validate(data, schema);
-}
+
 module.exports = router;
