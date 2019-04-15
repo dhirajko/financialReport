@@ -4,12 +4,14 @@ const _ = require("lodash");
 const bcrypt = require("bcryptjs");
 const { passWordValidator, validateUser, User } = require("../model/user");
 const auth = require('../middleware/auth')
-const moment = require('moment')
+const playground=require('./playground')
+
 
 router.get("/",  async (req, res) => {
-  const user = await User.find({})
-  //const user = await User.findOne({ _id: req.user._id }).select(['-_id', 'username', 'isActive']);
+  playground();
+  const user = await User.find({}) 
   res.send(user);
+
 });
 
 // router.get("/:id",auth, async (req, res) => {

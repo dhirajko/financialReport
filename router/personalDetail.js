@@ -1,6 +1,5 @@
 const experss = require("express");
 const router = experss.Router();
-const Joi = require("joi");
 const {
   dataValidator,
   PersonalDetail,
@@ -56,7 +55,7 @@ router.delete("/", auth, async (req, res) => {
   });
   if (!personalDetail)
     return res.status(404).send("personal detail  not found ");
-  res.send(personalDetail);
+  res.status(200).send(personalDetail);
 });
 
 
