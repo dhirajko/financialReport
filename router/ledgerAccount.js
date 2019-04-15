@@ -33,6 +33,10 @@ router.post("/", async (req, res) => {
 
     const payload = {
         ...req.body,
+        closingBalanceHistory: {
+            date :  Date.now(),
+            balance : req.body.openingBalance
+        },
         user: {
             _id: user.id,
             username: user.username

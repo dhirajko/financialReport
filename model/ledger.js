@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
+const {transactionSchema}=require('../model/transaction')
 
 const ledgerAccountSchema = new mongoose.Schema({
   user: {
@@ -14,7 +15,7 @@ const ledgerAccountSchema = new mongoose.Schema({
   inventoryAffects: Boolean,
   descreption: String,
   openingBalance: Number,
-  //transactions : [Transactions],
+  particular : [transactionSchema],
   closingBalanceHistory:[{
     date: Date,
     balance: Number
