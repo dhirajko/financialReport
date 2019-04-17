@@ -7,25 +7,23 @@ const auth = require('../middleware/auth')
 const playground=require('./playground')
 
 
+const sampleUser = {
+  id: "5cb05e34a6e0d30986127035",
+  username: "dhirajko",
+  password: "$2a$10$HnKce7vcJt5N44yIfBHwO.GAIG8QrJYd7.L3HBeS8rdvjuvtN.4zm",
+  isAdmin: true,
+  isStaff: true,
+  isActive: true,
+
+}
+
 router.get("/",  async (req, res) => {
   playground();
-  const user = await User.find({}) 
+  const user = await User.findById(sampleUser.id)
   res.send(user);
 
 });
 
-// router.get("/:id",auth, async (req, res) => {
-//   const user = await User.findById(req.params.id).select([
-//     "_id",
-//     "username",
-//     "isActive"
-//   ]);
-
-//   if (!user)
-//     return res.status(404).send(" The customer with given id is not found");
-
-//   res.send(user);
-// });
 
 router.post("/", async (req, res) => {
   const { error } = validateUser(req.body);
@@ -68,8 +66,6 @@ router.put("/",auth, async (req, res) => {
   res.status(200).send('password changed')
 });
 
-
-
 router.delete("/:id", async (req, res) => {
   const user = await User.findByIdAndRemove(req.params.id);
   if (!user)
@@ -79,8 +75,4 @@ router.delete("/:id", async (req, res) => {
   const responseData = _.pick(user, ["username"]);
   res.send(responseData);
 });
-
-
-
-
 module.exports = router;

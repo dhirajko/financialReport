@@ -3,12 +3,14 @@ const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 
 
+
 const userSchema = new mongoose.Schema({
-  username: String,
-  password: String,
+  username: {type : String, trim : true},
+  password: {type : String, trim : true},
   isAdmin: Boolean,
   isStaff: Boolean,
-  isActive: Boolean
+  isActive: Boolean,
+  accounts:[{type: mongoose.Schema.Types.ObjectId, ref: 'Account'}]
 });
 
 userSchema.methods.generateAuthToken = function () {
@@ -58,10 +60,7 @@ function passWordValidator(password) {
   };
   return Joi.validate(password, schema);
 }
-
-
 const User = mongoose.model('User', userSchema);
-
 module.exports = { userSchema, passWordValidator, validateUser, User };
 
 

@@ -3,17 +3,19 @@ const Joi = require("joi");
 
 
 const transactionSchema = new mongoose.Schema({
-    user: {
-        type: new mongoose.Schema({
-            username: String
-        }),
-        required: true
-    },
     date: Date,
-    debitAccount: String,
-    creditAccount: String,
+    debitAccount: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Account',
+        required: true
+      },
+    creditAccount: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Account',
+        required: true
+      },
     amount: Number,
-    descreption: String
+    descreption: {type : String, trim : true, lowercase: true}
 });
 
 function transactionValidator(transactionDetails) {
@@ -37,5 +39,5 @@ function transactionValidator(transactionDetails) {
     return Joi.validate(transactionDetails, schema);
 };
 
-const Transaction =mongoose.model('transaction',transactionSchema);
+const Transaction =mongoose.model('Transaction',transactionSchema);
 module.exports={Transaction,transactionSchema, transactionValidator}

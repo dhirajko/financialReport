@@ -3,7 +3,7 @@ const router = experss.Router();
 const _ = require('lodash')
 const auth = require("../middleware/auth");
 const { Transaction, transactionSchema, transactionValidator } = require('../model/transaction')
-const { LedgerAccount } = require('../model/ledger')
+const {Account } = require('../model/accounts')
 
 const user = {
     id: "5cb05e34a6e0d30986127035",
@@ -37,60 +37,78 @@ router.post('/', async (req, res) => {
     const { error } = transactionValidator(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
-    let debitAccount = await LedgerAccount.findOne({ "user._id": user.id, "accountName": req.body.debitAccount })
+    let debitAccount = await Account.findOne({ "user._id": user.id, "accountName": req.body.debitAccount })
     if (!debitAccount) return res.status(404).send('No given debit account found')
-    let creditAccount = await LedgerAccount.findOne({ "user._id": user.id, "accountName": req.body.creditAccount })
+    let creditAccount = await Account.findOne({ "user._id": user.id, "accountName": req.body.creditAccount })
     if (!creditAccount) return res.status(404).send('No given debit account found')
 
-    if (req.body.amount < debitAccount.closingBalance || req.body.amount < creditAccount.closingBalance)
-        return res.status(412).send('Insufficient balance')
-
     let newDebitBalance, newCreditBalance;
-    if (debitList.includes(debitAccount.trim().toLowerCase())) {
+    if (debitList.includes(debitAccount.tag.trim().toLowerCase())) {
         newDebitBalance = debitAccount.closingBalance + req.body.amount
     }
     else {
+        if (req.body.amount > debitAccount.closingBalance)
+            return res.status(412).send(`Insufficient ${debitAccount.accountName} balance`)
         newDebitBalance = debitAccount.closingBalance - req.body.amount
     }
-    if (debitList.includes(creditAccount.trim().toLowerCase())) {
+    if (debitList.includes(creditAccount.tag.trim().toLowerCase())) {
+        if (req.body.amount > creditAccount.closingBalance)
+            return res.status(412).send(`Insufficient ${creditAccount.accountName} balance`)
         newCreditBalance = creditAccount.closingBalance - req.body.amount
     } else {
         newCreditBalance = creditAccount.closingBalance + req.body.amount
     }
 
-    Promise.all([
-        createTransaction(req.body),
-        updateAccount(req.body,req.body.debitAccount,createTransaction(req.body),debitAccount.closingBalance,newDebitBalance),
-        updateAccount(req.body,req.body.creditAccount,createTransaction(req.body),creditAccount.closingBalance,newCreditBalance)
+    const transactionPayload = {
+        ...req.body,
+        user: {
+            _id: user.id,
+            username: user.username
+        }
+    }
+    console.log(newDebitBalance);
 
-    ]).then((result=>{
-        console.log(result);
-        
-    }))
-    res.send('transaction created')
+    const transaction = new Transaction(transactionPayload)
+
+    
+
+    updateAccount(debitAccount, newDebitBalance,transaction)
+
+    // Promise.all([
+    //     transaction.save(),
+    //     updateAccount(debitAccount, newDebitBalance,transaction),
+    //     updateAccount(creditAccount, newCreditBalance,transaction)
+    // ]).then((result => {
+    //     console.log(result);
+
+    // }))
+    // .then(result=> res.send(result)) 
+    // .catch(err=>res.send(err))
 })
 
-async function createTransaction(data) {
-    const transaction= await Transaction.create(data)
-    return transaction;
-}
 
-async function updateAccount(data, account, transaction, closingBalance, newClosingBalance) {
-    data.closingBalanceHistory.push({
-        date: Date.now(),
-        balance: closingBalance
-    })
+
+async function updateAccount(account, newClosingBalance, transaction) {
+
+    const alltransactions = account.particular;
+    alltransactions.push(transaction._id)
+    const closingBalanceHistory = account.closingBalanceHistory;
+    closingBalanceHistory.push({ Date: Date.now(), balance: account.closingBalance })
+
     const payload = {
-        particular: data.particular.push(transaction),
-        closingBalanceHistory: data.closingBalanceHistory,
+        particular: alltransactions,
+        closingBalanceHistory: closingBalanceHistory,
         closingBalance: newClosingBalance
     }
 
-    await LedgerAccount.findOneAndUpdate(
-        { "user._id": user.id, accountName: account },
-        { $set: payload },
-        { new: true }
-    );
+    console.log(payload);
+
+
+    // await Account.findOneAndUpdate(
+    //     { "user._id": user.id, accountName: account.accountName },
+    //     { $set: payload },
+    //     { new: true }
+    // );
 }
 
 

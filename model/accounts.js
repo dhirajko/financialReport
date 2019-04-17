@@ -1,21 +1,22 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
-const {transactionSchema}=require('../model/transaction')
 
-const ledgerAccountSchema = new mongoose.Schema({
+const accountSchema = new mongoose.Schema({
   user: {
-    type: new mongoose.Schema({
-      username: String
-    }),
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
     required: true
   },
-  accountName: String,
-  alias: String,
-  tag: String,
+  accountName: {type : String, trim : true, lowercase: true},
+  alias: {type : String, trim : true, lowercase: true},
+  tag: {type : String, trim : true, lowercase: true},
   inventoryAffects: Boolean,
-  descreption: String,
+  descreption: {type : String, trim : true, lowercase: true},
   openingBalance: Number,
-  particular : [transactionSchema],
+  particular : [{
+    type: mongoose.Schema.Types.ObjectId,
+     ref: 'Transaction'
+    }],
   closingBalanceHistory:[{
     date: Date,
     balance: Number
@@ -23,7 +24,8 @@ const ledgerAccountSchema = new mongoose.Schema({
   closingBalance : Number,
 });
 
-listOfTags = ['bank account',
+listOfTags = [
+  'bank account',
   'capital account',
   'cash in hand',
   'current liability',
@@ -44,7 +46,8 @@ listOfTags = ['bank account',
   'secured loan',
   'stock in hand',
   'sundry creditors',
-  'sundry debtors']
+  'sundry debtors'
+]
 
 function accountSchemavalidator(accountDetail) {
   schema = {
@@ -81,9 +84,8 @@ function accountSchemavalidatorForEdit(accountDetail) {
       .valid(listOfTags),
     inventoryAffects: Joi.boolean(),
     descreption: Joi.string(),
-    openingBalance: Joi.number(),  }
+    openingBalance: Joi.number()  }
   return Joi.validate(accountDetail, schema);
 };
-const LedgerAccount = mongoose.model('ledgerAccount', ledgerAccountSchema)
-
-module.exports = {accountSchemavalidatorForEdit, accountSchemavalidator, ledgerAccountSchema, LedgerAccount }
+const Account = mongoose.model('Account', accountSchema)
+module.exports = {accountSchemavalidatorForEdit, accountSchemavalidator, accountSchema, Account }

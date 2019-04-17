@@ -2,7 +2,8 @@ const user=require('../router/user')
 const personalDetail=require('../router/personalDetail')
 const userMangement=require('../controller/userManagement')
 const login=require('../controller/login')
-const accounts=require('../router/ledgerAccount')
+const accounts=require('../router/accounts')
+const transactions= require('../router/transaction')
 
 
 function routers(app) {
@@ -12,6 +13,7 @@ function routers(app) {
   app.use('/api/user', user);
   app.use('/api/personaldetail', personalDetail);
   app.use('/api/accounts',accounts)
+  app.use('/api/transactions', transactions)
 
   //management related api
   app.use('/api/user-management',userMangement)

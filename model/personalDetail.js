@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
-const { userSchema } = require("./user");
+
 
 const personalDetailSchema = new mongoose.Schema({
   user: {
-    type: new mongoose.Schema({
-      username: String
-    }),
+    type: mongoose.Schema.ObjectId,
+    ref: 'users',
     required: true
   },
   name: String,
