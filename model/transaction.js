@@ -3,19 +3,22 @@ const Joi = require("joi");
 
 
 const transactionSchema = new mongoose.Schema({
+    user: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: true
+      },
     date: Date,
     debitAccount: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Account',
+        type: String,
         required: true
       },
     creditAccount: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Account',
+        type: String,
         required: true
       },
     amount: Number,
-    descreption: {type : String, trim : true, lowercase: true}
+    descreption: {type : String}
 });
 
 function transactionValidator(transactionDetails) {

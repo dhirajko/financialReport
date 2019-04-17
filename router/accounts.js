@@ -17,13 +17,8 @@ const sampleUser = {
 
 router.get('/', async (req, res) => {
     const user = await User.findById(sampleUser.id)
-        .populate({
-            path: 'accounts'
-        })
-        .exec(function (err, user) {
-            if (err) return res.send(err);
-            res.send(user.accounts)
-        })
+        .populate('accounts')
+        res.send(user.accounts)
 
 })
 
@@ -42,7 +37,7 @@ router.post("/", async (req, res) => {
     const payload = {
         ...req.body,
         closingBalanceHistory: {
-            date: Date.now(),
+            date: new Date(),
             balance: req.body.openingBalance
         },
         user: sampleUser.id,
