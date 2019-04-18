@@ -17,7 +17,7 @@ userSchema.methods.generateAuthToken = function () {
   const expireTime = Date.now() + 900000;
   const token = jwt.sign(
     {
-      _id: this._id,
+      id: this.id,
       isAdmin: this.isAdmin,
       username: this.username,
       isStaff: this.isStaff,

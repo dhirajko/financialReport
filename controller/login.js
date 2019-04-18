@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
   const token = user.generateAuthToken();
   res
     .header("x-auth-token", token)
-    .send(_.pick(user, ["_id", "username", "isActive"]));
+    .send(_.pick(user, ["id", "username", "isActive"]));
 });
 
 function validateAuth(req) {
