@@ -28,6 +28,12 @@ const debitList = [
     'stock in hand',
     'sundry debtors']
 
+
+router.get('/', async (req, res) => {
+    const transactions = await Transaction.find({ "user": sampleUser.id })
+    res.status(200).send(transactions)
+})
+
 router.get('/:account', async (req, res) => {
     const account = await Account.findOne({ "user": sampleUser.id, accountName: req.params.account })
         .populate('particular')
@@ -70,9 +76,20 @@ router.post('/', async (req, res) => {
 })
 
 router.delete('/:id', async (req, res) => {
-    const transaction = await Transaction.findByIdAndRemove(req.params.id)
+    const transaction = await Transaction.findById(req.params.id)
     if (!transaction) return res.status(404).send('Transaction not found')
-    res.status(200).send(transaction)
+    const debitAccount = await Account.findOne({ "user": sampleUser.id, accountName: transaction.debitAccount })
+        .populate('particular')
+    const debitAccountIndex = debitAccount.particular.map(event => event.id).indexOf(req.params.id);
+    debitAccount.particular.splice(debitAccountIndex, 1)
+    const creditAccount = await Account.findOne({ "user": sampleUser.id, accountName: transaction.creditAccount })
+        .populate('particular')
+    const creditAccountIndex = creditAccount.particular.map(event => event.id).indexOf(req.params.id);
+    creditAccount.particular.splice(creditAccountIndex, 1)    
+    await debitAccount.save()
+    await creditAccount.save()
+    const deletedData= await Transaction.findByIdAndRemove(req.params.id)
+    res.status(200).send(deletedData)
 })
 
 
