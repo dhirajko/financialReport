@@ -12,6 +12,7 @@ const playground = require('./playground')
 router.get("/", auth, async (req, res) => {
   //playground();
   const user = await User.findById(req.user.id)
+  .select('-password')
   if(!user) return res.status(404).send('user not found')
   res.send(user);
 
