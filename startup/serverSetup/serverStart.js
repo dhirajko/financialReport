@@ -13,14 +13,19 @@ const options = {
     cert: sslcert
 };
 
+/* 
+http.createServer((req, res) => {
+    res.writeHead(301,
+        {Location: 'https://financial-report.herokuapp.com'+ req.url });
+    res.end();
+}).listen(3000);
+https.createServer(options, application).listen(process.env.PORT, ()=>{
+    console.log('Listening to port : ',process.env.PORT);       
+})
+*/
 
 function redirection(application) {
-    http.createServer((req, res) => {
-        res.writeHead(301,
-            {Location: 'https://financial-report.herokuapp.com'+ req.url });
-        res.end();
-    }).listen(3000);
-    https.createServer(options, application).listen(process.env.PORT, ()=>{
+    application.listen(process.env.PORT, ()=>{
         console.log('Listening to port : ',process.env.PORT);       
     })
 }
