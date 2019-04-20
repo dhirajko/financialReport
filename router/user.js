@@ -36,10 +36,12 @@ router.post("/", async (req, res) => {
 
   await user.save();
   const token = user.generateAuthToken();
+  const payload=_.pick(user, ["id", "username", "isActive"])
+  payload.token=token
   res
     .status(201)
-    .header("x-auth-token", token)
-    .send(_.pick(user, ["id", "username", "isActive"]));
+    // .header("x-auth-token", token)
+    .send(payload);
 });
 
 router.put("/", auth, async (req, res) => {

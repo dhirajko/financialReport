@@ -18,9 +18,12 @@ router.post("/", async (req, res) => {
     return res.status(400).send("invalid username or password");
 
   const token = user.generateAuthToken();
+  const payload=_.pick(user, ["id", "username", "isActive"])
+  payload.token=token
   res
     .header("x-auth-token", token)
-    .send(_.pick(user, ["id", "username", "isActive"]));
+    //.send(_.pick(user, ["id", "username", "isActive"]));
+    .send(payload);
 });
 
 function validateAuth(req) {
