@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
+const {allTags} = require('../utility/listOfTags')
 
 const accountSchema = new mongoose.Schema({
   user: {
@@ -12,7 +13,7 @@ const accountSchema = new mongoose.Schema({
   tag: {type : String, trim : true, lowercase: true},
   inventoryAffects: Boolean,
   descreption: {type : String, trim : true, lowercase: true},
-  openingBalance: Number,
+  openingBalance: {type : Number,default : 0},
   particular : [{
     type: mongoose.Schema.Types.ObjectId,
      ref: 'Transaction'
@@ -24,30 +25,6 @@ const accountSchema = new mongoose.Schema({
   closingBalance : Number,
 });
 
-listOfTags = [
-  'bank account',
-  'capital account',
-  'cash in hand',
-  'current liability',
-  'current assets',
-  'deposits (assets)',
-  'direct expenses',
-  'direct incomes',
-  'duties and tax',
-  'fixed assets',
-  'indirect expenses',
-  'indirect incomes',
-  'investment',
-  'loan (liability)',
-  'loan (assets)',
-  'provisions',
-  'reserves and surplus',
-  'sales account',
-  'secured loan',
-  'stock in hand',
-  'sundry creditors',
-  'sundry debtors'
-]
 
 function accountSchemavalidator(accountDetail) {
   schema = {
@@ -60,7 +37,7 @@ function accountSchemavalidator(accountDetail) {
       .max(255),
     tag: Joi.string()
       .required()
-      .valid(listOfTags),
+      .valid(allTags),
     inventoryAffects: Joi.boolean()
       .required(),
     descreption: Joi.string(),

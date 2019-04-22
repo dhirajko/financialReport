@@ -9,14 +9,14 @@ const { User } = require('../model/user')
 
 router.get('/',auth, async (req, res) => {
     const user = await User.findById(req.user.id)
-        .populate('accounts','-_id accountName closingBalance')
+        .populate('accounts')
         res.send(user.accounts)
 
 })
 
 router.get('/:name',auth, async (req, res) => {
     const account = await Account.findOne({ "user": req.user.id, accountName: req.params.name })
-    .select('-_id accountName')
+    
     res.status(200).send(account)
 })
 
