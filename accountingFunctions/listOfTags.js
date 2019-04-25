@@ -24,7 +24,8 @@ const liability = [
 const income = [
     'direct incomes',
     'indirect incomes',
-    'sales account'
+    'sales account',
+    'loss'
 ]
 
 const expesnse = [

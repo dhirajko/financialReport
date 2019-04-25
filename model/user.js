@@ -5,12 +5,13 @@ const jwt = require('jsonwebtoken');
 
 
 const userSchema = new mongoose.Schema({
-  username: {type : String, trim : true},
-  password: {type : String, trim : true},
+  username: { type: String, trim: true },
+  password: { type: String, trim: true },
+  name: { type: String, trim: true },
   isAdmin: Boolean,
   isStaff: Boolean,
   isActive: Boolean,
-  accounts:[{type: mongoose.Schema.Types.ObjectId, ref: 'Account'}]
+  accounts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Account' }]
 });
 
 userSchema.methods.generateAuthToken = function () {
@@ -39,6 +40,10 @@ function validateUser(user) {
     password: Joi.string()
       .min(3)
       .max(1024)
+      .required(),
+    name: Joi.string()
+      .min(1)
+      .max(255)
       .required(),
     isAdmin: Joi.boolean(),
     isStaff: Joi.boolean(),

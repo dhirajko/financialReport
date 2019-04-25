@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
-const {allTags} = require('../utility/listOfTags')
+const { allTags } = require('../accountingFunctions/listOfTags')
 
 const accountSchema = new mongoose.Schema({
   user: {
@@ -8,21 +8,21 @@ const accountSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  accountName: {type : String, trim : true, lowercase: true},
-  alias: {type : String, trim : true, lowercase: true},
-  tag: {type : String, trim : true, lowercase: true},
+  accountName: { type: String, trim: true, lowercase: true,required: true, },
+  alias: { type: String, trim: true, lowercase: true},
+  tag: { type: String, trim: true, lowercase: true },
   inventoryAffects: Boolean,
-  descreption: {type : String, trim : true, lowercase: true},
-  openingBalance: {type : Number,default : 0},
-  particular : [{
+  descreption: { type: String, trim: true, lowercase: true },
+  openingBalance: { type: Number, default: 0 },
+  particular: [{
     type: mongoose.Schema.Types.ObjectId,
-     ref: 'Transaction'
-    }],
-  closingBalanceHistory:[{
+    ref: 'Transaction'
+  }],
+  closingBalanceHistory: [{
     date: Date,
     balance: Number
   }],
-  closingBalance : Number,
+  closingBalance: Number,
 });
 
 
@@ -34,7 +34,8 @@ function accountSchemavalidator(accountDetail) {
       .required(),
     alias: Joi.string()
       .min(1)
-      .max(255),
+      .max(255)
+      .optional(),
     tag: Joi.string()
       .required()
       .valid(allTags),
@@ -52,7 +53,7 @@ function accountSchemavalidatorForEdit(accountDetail) {
     accountName: Joi.string()
       .min(1)
       .max(255),
-     
+
     alias: Joi.string()
       .min(1)
       .max(255),
@@ -61,8 +62,9 @@ function accountSchemavalidatorForEdit(accountDetail) {
       .valid(listOfTags),
     inventoryAffects: Joi.boolean(),
     descreption: Joi.string(),
-    openingBalance: Joi.number()  }
+    openingBalance: Joi.number()
+  }
   return Joi.validate(accountDetail, schema);
 };
 const Account = mongoose.model('Account', accountSchema)
-module.exports = {accountSchemavalidatorForEdit, accountSchemavalidator, accountSchema, Account }
+module.exports = { accountSchemavalidatorForEdit, accountSchemavalidator, accountSchema, Account }
