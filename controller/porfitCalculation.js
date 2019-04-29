@@ -1,4 +1,4 @@
-const { income, expesnse } = require('./listOfTags')
+const { income, expesnse } = require('../utils/listOfTags')
 const { User } = require('../model/user')
 const { Account } = require('../model/accounts')
 const { Transaction } = require('../model/transaction')
@@ -26,7 +26,7 @@ module.exports = async (userId) => {
             user: userId,
             date: new Date(),
             debitAccount: "profit and loss account",
-            creditAccount: "accumulated profit",
+            creditAccount: "accumulated profit and loss account",
             amount: profit,
             descreption: `profit and loss calculated on ${new Date()}`
         }

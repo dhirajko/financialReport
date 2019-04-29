@@ -11,7 +11,8 @@ const userSchema = new mongoose.Schema({
   isAdmin: Boolean,
   isStaff: Boolean,
   isActive: Boolean,
-  accounts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Account' }]
+  accounts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Account' }],
+  
 });
 
 userSchema.methods.generateAuthToken = function () {

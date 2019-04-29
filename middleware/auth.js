@@ -6,7 +6,7 @@ function auth(req, res, next) {
   if (!token) return res.status(401).send('Assess denied. No token provied')
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
+    const decoded = jwt.verify(token, process.env.JWT_PRIVATE_KEY);   
     req.user = decoded;
     next();
 

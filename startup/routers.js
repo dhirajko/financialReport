@@ -5,6 +5,7 @@ const login=require('../controller/login')
 const accounts=require('../router/accounts')
 const transactions= require('../router/transaction')
 const profitAndLossStatus= require('../router/profitandlossStatus')
+const apidocs= require('../router/apidoc')
 
 
 function routers(app) {
@@ -16,6 +17,7 @@ function routers(app) {
   app.use('/api/accounts',accounts)
   app.use('/api/transactions', transactions)
   app.use('/api/profit',profitAndLossStatus)
+  app.use('/api/docs',apidocs)
 
   //management related api
   app.use('/api/user-management',userMangement)

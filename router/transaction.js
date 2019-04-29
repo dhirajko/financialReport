@@ -3,7 +3,7 @@ const router = experss.Router();
 const _ = require('lodash')
 const auth = require("../middleware/auth");
 const { Transaction, transactionValidator } = require('../model/transaction')
-const transctionCreation = require('../accountingFunctions/nominalTransaction')
+const transctionCreation = require('../controller/transctionCreator')
 
 const { Account } = require('../model/accounts')
 
@@ -16,12 +16,11 @@ router.get('/', auth, async (req, res) => {
     res.status(200).send(transactions)
 })
 
-router.get('/:account', auth, async (req, res) => {
-    const account = await Account.findOne({ "user": req.user.id, accountName: req.params.account })
-        .populate('particular', '-user')
-    if (!account)
-        return res.status(404).send("Account not found")
-    res.status(200).send(account.particular)
+router.get('/:id', auth, async (req, res) => {
+    const transaction= await Transaction.findOne({user: req.user.id, _id : req.params.id})
+    if (!transaction)
+        return res.status(404).send("Transaction not found")
+    res.status(200).send(transaction)
 })
 
 router.post('/', auth, async (req, res) => {
