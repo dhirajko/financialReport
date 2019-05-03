@@ -13,11 +13,11 @@ const { Account }= require('../model/accounts')
 
 
 router.get('/', auth, async (req, res) => {
- const trialBalance=await  playground(req.user.id);
+//  const trialBalance=await  playground(req.user.id);
   const user = await User.findById(req.user.id)
     .select('-password')
   if (!user) return res.status(404).send('user not found')
-  res.send(trialBalance);
+  res.send(user);
 
 });
 
