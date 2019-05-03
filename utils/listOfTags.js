@@ -13,7 +13,8 @@ const currentAssets = [
     'fixed assets',
     'investment',
     'stock in hand',
-    'sundry debtors']
+    'sundry debtors',
+    ]
 
 const liability = [
     'current liability',
@@ -28,7 +29,7 @@ const income = [
     'loss'
 ]
 
-const expesnse = [
+const expenses = [
     'direct expenses',
     'duties and tax',
     'indirect expenses',
@@ -43,5 +44,7 @@ const capital = [
 
 const allAssets=_.concat(fixedAssets,currentAssets)
 const liabilityAndCapital=_.concat(capital,liability)
-const allTags=_.concat(allAssets,liabilityAndCapital,income,expesnse)
-module.exports = {allTags,allAssets,liabilityAndCapital,fixedAssets,currentAssets,capital,liability,income,expesnse}
+const allDebit=_.concat(allAssets,expenses)
+const allCredit=_.concat(liabilityAndCapital,income)
+const allTags=_.concat(allDebit,allCredit)
+module.exports = {allTags,allDebit,allCredit,allAssets,liabilityAndCapital,fixedAssets,currentAssets,capital,liability,income,expenses}

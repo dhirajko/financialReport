@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
   isStaff: Boolean,
   isActive: Boolean,
   accounts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Account' }],
+  createdOn: {type : Date, default: new Date()}
   
 });
 

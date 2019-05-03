@@ -2,7 +2,7 @@ const { Account } = require('../model/accounts')
 module.exports = async (user,accountName,tag,alias,descreption,openingBalance,closingBalance,inventoryAffects) => {
     
     const payload = {
-        "user": user.id,
+        "user": user._id,
         "accountName": accountName,
         "alias": alias,
         "tag": tag,

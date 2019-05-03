@@ -1,4 +1,4 @@
-const { income, expesnse } = require('../utils/listOfTags')
+const { income, expenses } = require('../utils/listOfTags')
 const { User } = require('../model/user')
 const { Account } = require('../model/accounts')
 const { Transaction } = require('../model/transaction')
@@ -14,7 +14,7 @@ module.exports = async (userId) => {
         if (income.includes(account.tag)) {
             allIncome = allIncome + account.closingBalance
         }
-        if (expesnse.includes(account.tag)) {
+        if (expenses.includes(account.tag)) {
             allExpenses = allExpenses + account.closingBalance
         }
     })
