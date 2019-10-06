@@ -1,46 +1,23 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
 
-
 const transactionSchema = new mongoose.Schema({
-    user: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'User',
-        required: true
-      },
-    date: Date,
-    debitAccount: {
-        type: String,
-        required: true
-      },
-    creditAccount: {
-        type: String,
-        required: true
-      },
-    amount: Number,
-    descreption: {type : String}
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User"
+  },
+  date: { type: Date, default: Date.now() },
+  debitAccount:  {
+    type: mongoose.Schema.ObjectId,
+    ref: "Account"
+  },
+  creditAccount:  {
+    type: mongoose.Schema.ObjectId,
+    ref: "Account"
+  },
+  amount: Number,
+  descreption: { type: String, trim: true }
 });
 
-function transactionValidator(transactionDetails) {
-    schema = {
-        date: Joi.date()
-            .min('1-1-2017')
-            .max(Date.now())
-            .required(),
-        debitAccount: Joi.string()
-            .min(1)
-            .max(255),
-        creditAccount: Joi.string()
-            .min(1)
-            .max(255)
-            .required(),
-        amount: Joi.number()
-            .required(),
-        descreption: Joi.string(),
-
-    }
-    return Joi.validate(transactionDetails, schema);
-};
-
-const Transaction =mongoose.model('Transaction',transactionSchema);
-module.exports={Transaction,transactionSchema, transactionValidator}
+const Transaction = mongoose.model("Transaction", transactionSchema);
+module.exports = { Transaction};

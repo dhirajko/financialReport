@@ -1,80 +1,38 @@
-const experss = require('express');
-const router = experss.Router();
-const _ = require('lodash');
-const bcrypt = require('bcryptjs');
-const { passWordValidator, validateUser, User} = require('../model/user');
-const auth = require('../middleware/auth')
-const playground = require('./playground')
-const accountCreator = require('../controller/accountCreator')
-const {Transaction} = require('../model/transaction')
-const { Account }= require('../model/accounts')
+const express = require("express");
+const router = express.Router();
+const {assetList}= require("../const/listOfTags")
+const {
+  createUser,
+  readUser,
+  readUserById,
+  readUserByEmail
+} = require("../controller/user");
+const auth= require("../middleware/auth")
 
-
-
-
-router.get('/', auth, async (req, res) => {
-//  const trialBalance=await  playground(req.user.id);
-  const user = await User.findById(req.user.id)
-    .select('-password')
-  if (!user) return res.status(404).send('user not found')
-  res.send(user);
-
+router.get("/", async (req, res) => {
+  if (req.query.email) {
+    const users = await readUserByEmail(req.query.email);
+    return res.status(users.status_code).send(users);
+  }
+  const users = await readUser();
+  return res.status(users.status_code).send(users);
 });
 
-
-router.post('/', async (req, res) => {
-  const { error } = validateUser(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
-  let user = await User.findOne({ username: req.body.username });
-  if (user) return res.status(409).send('username already registered');
-
-  const payloadForDataBase = _.pick(req.body, ['username', 'password']);
-  user = new User(payloadForDataBase);
-  const salt = await bcrypt.genSalt(10);
-  user.password = await bcrypt.hash(user.password, salt);
-  user.isAdmin = false;
-  user.isStaff = false;
-  user.isActive = false;
-  await accountCreator(user,'profit and loss account','profit',"PLAccount","",0,0,false)
-  await accountCreator(user,'capital Account','capital account',"","profit till date",0,0,false)
-  await accountCreator(user,'accumulated profit and loss account','capital account',"capital equity Invested","",0,0,false)
-  const token = user.generateAuthToken();
-  const payload = _.pick(user, ['id', 'username', 'isActive'])
-  payload.token = token
-  res
-    .status(201)
-    // .header('x-auth-token', token)
-    .send(payload);
+router.get("/a",auth, async (req, res) => {
+  return res.status(200).send(assetList);
 });
 
-router.put('/', auth, async (req, res) => {
-  const { error } = passWordValidator(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
-  let user = await User.findOne({ username: req.user.username });
-  if (!user) return res.status(404).send('user not found');
-
-  const validPassword = await bcrypt.compare(req.body.oldPassword, user.password);
-  if (!validPassword)
-    return res.status(400).send('incorrect password');
-  const salt = await bcrypt.genSalt(10)
-  newHashedPassword = await bcrypt.hash(req.body.newPassword, salt);
-
-  user.password = newHashedPassword
-  await user.save()
-  res.status(200).send('password changed')
+router.get("/:id", auth, async (req, res) => {
+  const user = await readUserById(req.params.id);
+  return res.status(user.status_code).send(user);
 });
 
-router.delete('/', auth, async (req, res) => {
-  const user = await User.findById(req.user.id)
-  .populate('accounts')
-  if (!user)
-    return res.status(404).send(' The customer with given id is not found');
-  await Transaction.deleteMany({ user : req.user.id })
-  await Account.deleteMany({user : req.user.id})
-  await user.remove()
-  
-  res.status(200).send('deleted successfully')
+router.post("/", async (req, res) => {
+  const user = await createUser(req.body);
+  return res.status(user.status_code).send(user);
 });
+
+router.put("/:id", async (req, res) => {});
+
+router.delete("/:id", async (req, res) => {});
 module.exports = router;

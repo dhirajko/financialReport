@@ -1,52 +1,42 @@
-const experss = require("express");
-const router = experss.Router();
-const _ = require('lodash')
+const express = require("express");
+const Joi = require("joi");
+const router = express.Router();
+const {
+  createTransaction,
+  readTransactions,
+  readTransactionsByAccountId,
+  readTransactionsById
+} = require("../controller/transaction");
 const auth = require("../middleware/auth");
-const { Transaction, transactionValidator } = require('../model/transaction')
-const transctionCreation = require('../controller/transctionCreator')
 
-const { Account } = require('../model/accounts')
+router.get("/", auth, async (req, res) => {
+  if (req.query.accountId) {
+    const { error } = Joi.validate(req.query.accountId, Joi.objectId());
+    if (error)
+      return res.status(400).send({
+        status_code: 400,
+        message: "FAILED",
+        data: error.details[0].message
+      });
+    const transaction = await readTransactionsByAccountId(req.user.id,req.query.accountId);
+    return res.status(transaction.status_code).send(transaction);
+  }
+  const transactions = await readTransactions(req.user.id);
+  return res.status(transactions.status_code).send(transactions);
+});
 
+router.get("/:id", auth, async (req, res) => {
+  const transaction = await readTransactionsById(req.params.id);
+  return res.status(transaction.status_code).send(transaction);
+});
 
-router.get('/', auth, async (req, res) => {
-    const transactions = await Transaction.find({ "user": req.user.id })
-        .select('-user')
-    if (!transactions)
-        return res.status(404).send("Transactions not found")
-    res.status(200).send(transactions)
-})
+router.post("/", auth, async (req, res) => {
+  req.body.user = req.user.id;
+  const transaction = await createTransaction(req.body);
+  return res.status(transaction.status_code).send(transaction);
+});
 
-router.get('/:id', auth, async (req, res) => {
-    const transaction= await Transaction.findOne({user: req.user.id, _id : req.params.id})
-    if (!transaction)
-        return res.status(404).send("Transaction not found")
-    res.status(200).send(transaction)
-})
+router.put("/:id", async (req, res) => {});
 
-router.post('/', auth, async (req, res) => {
-    const { error } = transactionValidator(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-    const newTransaction = await transctionCreation(req.user.id, req.body)
-    res.status(newTransaction.code).send(newTransaction.message)
-})
-
-router.delete('/:id', auth, async (req, res) => {
-    const transaction = await Transaction.findById(req.params.id)
-    if (!transaction) return res.status(404).send('Transaction not found')
-    const debitAccount = await Account.findOne({ "user": req.user.id, accountName: transaction.debitAccount })
-        .populate('particular')
-    const debitAccountIndex = debitAccount.particular.map(event => event.id).indexOf(req.params.id);
-    debitAccount.particular.splice(debitAccountIndex, 1)
-    const creditAccount = await Account.findOne({ "user": req.user.id, accountName: transaction.creditAccount })
-        .populate('particular')
-    const creditAccountIndex = creditAccount.particular.map(event => event.id).indexOf(req.params.id);
-    creditAccount.particular.splice(creditAccountIndex, 1)
-    await debitAccount.save()
-    await creditAccount.save()
-    const deletedData = await Transaction.findByIdAndRemove(req.params.id)
-    res.status(200).send(deletedData)
-})
-
-
-
+router.delete("/:id", async (req, res) => {});
 module.exports = router;

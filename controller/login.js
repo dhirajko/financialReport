@@ -1,44 +1,27 @@
-const express = require("express");
-const Joi = require("joi");
 const bcrypt = require("bcryptjs");
-const router = express.Router();
-const _ = require("lodash");
-const jwt = require("jsonwebtoken");
 const { User } = require("../model/user");
+const { loginValidataor } = require("../utils/validator/login");
+const { success, failed } = require("../const/response");
+const login = async body => {
+  const { error } = loginValidataor(body);
+  if (error) return failed(400, error.details[0].message);
 
-router.post("/", async (req, res) => {
-  const { error } = validateAuth(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  let user = await User.findOne({ email: body.email });
+  if (!user) return failed(400, "invalid email");
 
-  let user = await User.findOne({ username: req.body.username });
-  if (!user) return res.status(400).send("invalid username");
-
-  const validPassword = await bcrypt.compare(req.body.password, user.password);
-  if (!validPassword)
-    return res.status(400).send("invalid password");
+  const validPassword = await bcrypt.compare(body.password, user.password);
+  if (!validPassword) return failed(400, "invalid password");
 
   const token = user.generateAuthToken();
-  const payload=_.pick(user, ["id", "username", "isActive"])
-  payload.token=token
-  res
-    .header("x-auth-token", token)
-    //.send(_.pick(user, ["id", "username", "isActive"]));
-    .send(payload);
-});
-
-function validateAuth(req) {
-  const schema = {
-    username: Joi.string()
-      .min(3)
-      .max(255)
-      .required(),
-    password: Joi.string()
-      .min(3)
-      .max(1024)
-      .required()
+  let payload = {
+    id: user.id,
+    email: user.email,
+    isAdmin: user.isAdmin,
+    isStaff: user.isStaff,
+    isActive: user.isActive,
+    token: token
   };
+  return success(200, payload);
+};
 
-  return Joi.validate(req, schema);
-}
-
-module.exports = router;
+module.exports = { login };
