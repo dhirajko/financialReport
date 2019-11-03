@@ -1,4 +1,4 @@
-export const API_URL = "http://localhost:5000/";
+export const API_URL = "https://financial-statement-app.herokuapp.com/";
 export const JWT_TOKEN = "token";
 export const LOGGED_IN_USER_EMAIL = "sample-user-email";
 export const USER_ID = "sample-user-id";
