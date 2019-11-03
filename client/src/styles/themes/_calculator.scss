@@ -1,0 +1,188 @@
+.summary {
+    border: 1px solid $color-border;
+    padding: $ruler-lg;
+    border-radius: $ruler-sm $ruler-sm 0 0;
+    border-bottom: none;
+    background-image: url("../../assets/themes/strip.png");
+    background-repeat: repeat-x;
+    background-position: bottom center;
+    background-size: 100% auto;
+    transition: all 0.2s ease-in-out;
+
+    @media screen and (max-width: $break-large) {
+        position: fixed;
+        background-color: $color-white;
+        background-image: none;
+        left: 0;
+        width: inherit;
+        padding:$ruler-sm;
+        
+        bottom: 60px;
+        z-index: 40;
+
+        &.customer {
+            bottom: 0;
+        }
+
+        .summary-content {
+            display: none;
+            transition: all 0.2s ease-in-out;
+        }
+
+        & .close {
+            text-align: center;
+            width:100%;
+            display: none;
+            & span {
+                position: relative;
+                top:-$ruler-sm;
+            }
+        }
+
+        .open-summary {
+            font-size: 1rem;
+            background-color: transparent;
+
+            .flag {
+                width:$ruler-lg !important;
+                position: relative;
+                top:-2px;
+            }
+        }
+
+        &.open {
+            box-shadow: 0 0 30px rgba($color-grey, 0.3);
+
+            & .open-summary {
+                display: none !important;
+            }
+
+            & .summary-content {
+                display: block;
+                padding:$ruler-lg;
+            }
+
+            & .close {
+                display: block;
+            }
+
+        }
+    }
+
+    .flag {
+        position: relative;
+        width: $ruler-lg*1.5;
+        top: -$ruler-ty;
+    }
+
+}
+
+
+.calculator {
+    &-group {
+        border: 1px solid $color-border;
+        border-radius: $ruler-sm;
+        padding: $ruler-base;
+        background-color: $color-white;
+    }
+
+    &-wrapper {
+        @include flexify(center, center);
+        flex: 0 1 50%;
+    }
+
+    &-input {
+        @include flexify(center, space-between);
+        flex-wrap: wrap;
+        box-sizing: border-box;
+
+        label {
+            flex: 0 0 100%;
+            margin: 0;
+            flex-direction: row;
+            color:$color-grey;
+            font-size: $ruler-base;
+        }
+
+        input, select {
+            @include skinny();
+        }
+
+        input {
+            width: 100%;
+            font-size: $ruler-xl;
+            margin: 0 $ruler-base;
+            left: 0;
+        }
+        
+        .flag {
+            width: 34px;
+            height: 34px;
+            display: inline-block;
+
+            @supports (-moz-appearance:none) {
+                margin-left: $ruler-base*4;
+                margin-right: -$ruler-base/2;
+            }
+        }
+    }
+}
+
+
+
+
+.btn {
+    &:disabled, &.disabled, &:disabled:focus, &:disabled:active {
+        background-color: $color-teal !important;
+        border-color: $color-teal !important;
+    }
+}
+
+
+
+
+dl {
+    display: block;
+    margin-bottom: $ruler-sm;
+    clear: both;
+    &:after {
+        display: block;
+        content: "";
+        clear: both;
+    }
+}
+
+dt, dd {
+    width: 50%;
+    margin: 0;
+    float: left;
+    padding: $ruler-sm 0;
+}
+
+dt {
+    text-align: right;
+}
+dd {
+    text-align: left;
+}
+
+
+
+
+
+.bg-primary {
+    background-color: $color-navy !important;
+    & dl, & h3 {
+        color:$color-white !important;
+    }
+}
+
+
+.table {
+    &-sender td {
+        width: 25%;
+    }
+    th {
+        border-bottom-width: 3px;
+    }
+}

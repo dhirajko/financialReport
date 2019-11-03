@@ -1,0 +1,151 @@
+.main-nav-text {
+  letter-spacing: -1px;
+  font-weight: bold;
+  font-size: smaller;
+}
+
+.sub-nav-text {
+  color: #929696;
+  font-size: small;
+  padding-left: 10px;
+}
+
+.main-text {
+  color: #252d3a;
+  letter-spacing: -1px;
+}
+
+.barely-visible-text {
+  color: #bec6dc;
+  font-size: small;
+  text-align: center;
+}
+
+.sideNumbers {
+  color: #bdc3d2;
+  font-size: xx-large;
+  font-weight: bold;
+}
+
+body {
+  background: #e7ebee !important;
+}
+.body-main {
+  overflow: hidden;
+}
+
+.scrollableDiv {
+  max-height: 50vh;
+  overflow: auto;
+}
+
+.dotted-borders {
+  border: 1px dashed gray !important;
+  background: transparent !important;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.light-blue-btn {
+  background: deepskyblue !important;
+}
+.btn-circle-lg,
+.btn-circle-lg:active {
+  width: 55px;
+  height: 55px;
+  line-height: 55px;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  border: none;
+  background-color: #db3d44;
+  color: white;
+  outline: none;
+}
+.modal {
+  z-index: 1060;
+  padding-top: 100px;
+}
+.transaction-description {
+  font-family: "Chivo", sans-serif;
+  font-size: 20px;
+}
+.account-tag {
+  font-size: 12px;
+  font-family: "Kreon", serif;
+  color: white;
+  background-color: #0b4648;
+  border: none;
+  border-radius: 25px;
+}
+.account-balance-inventory {
+  font-family: "Kreon", serif;
+  font-size: 20px;
+}
+.account-balance-description {
+  font-family: "Chivo", sans-serif;
+  font-size: 20px;
+}
+
+.account-balance-values {
+  font-family: "Yeseva One", cursive;
+  font-size: 20px;
+}
+.transaction-card-body {
+  background-color: rgba(181, 255, 201, 0.3);
+  border-radius: 15px;
+}
+/* TOASTR BUGFIX */
+#toast-container > div {
+  opacity: 1;
+}
+.toast {
+  font-size: initial !important;
+  border: initial !important;
+  backdrop-filter: blur(0) !important;
+}
+.toast-success {
+  background-color: #51a351 !important;
+}
+.toast-error {
+  background-color: #bd362f !important;
+}
+.toast-info {
+  background-color: #2f96b4 !important;
+}
+.toast-warning {
+  background-color: #f89406 !important;
+}
+.scrollable-element {
+  scrollbar-width: thin;
+}
+.round-button {
+  display:block;
+  width:60px;
+  height:60px;
+  line-height:55px;
+  border: 2px solid #f5f5f5;
+  border-radius: 50%;
+  color:#f5f5f5;
+  text-align:center;
+  text-decoration:none;
+  background: #555777;
+  box-shadow: 0 0 3px gray;
+  font-size:15px;
+  font-weight:bold;
+}
+.round-button:hover {
+  background: #777555;
+}
+
+.list-page-heading{
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 40px;
+}
+
+.statement-heading{
+  font-family: 'Palanquin Dark', sans-serif;
+  font-size: 20px;
+}
+

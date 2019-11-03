@@ -1,0 +1,14 @@
+@mixin flexify($vertical, $horizontal) {
+    display: flex;
+    flex-direction: row;
+    align-items: $vertical;
+    justify-content: $horizontal;
+}
+
+@mixin skinny() {
+    background-color: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    border: none;
+}

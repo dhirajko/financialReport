@@ -1,0 +1,82 @@
+.custom-input-group {
+    border:1px solid $color-border;
+    border-radius: $ruler-ty;
+    padding: $ruler-ty $ruler-base;
+    @include flexify(center, space-between);
+    transition: all .15s ease-in-out;
+
+    input, button {
+        appearance: none;
+        border: 0;
+        outline: none;
+        font-size: $ruler-base;
+        -webkit-appearance: none;
+        background: transparent;
+    }
+
+    &:focus-within {
+        border-color: $color-sky;
+        box-shadow: 0 0 0 0.2rem rgba($color-sky,.5) !important;
+    }
+
+    input {
+        flex: 1 0 80%;
+    }
+}
+
+
+.select {
+    &-wrapper {
+        display: block;
+        box-sizing: border-box;
+
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        /* SVG background image */
+        background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='%23CCCCCC'><polygon points='0,0 100,0 50,50'/></svg>") no-repeat;
+        background-size: 12px;
+        background-position: calc(100% - 10px) 10px;
+        background-repeat: no-repeat;
+
+    
+        select {
+            display: block;
+            width: 100%;
+            margin-right: $ruler-lg;
+        }
+
+    }
+}
+
+
+
+
+label {
+    display: block;
+    width: 100%;
+}
+
+
+
+form small {
+    padding-top: $ruler-lg;
+    display: block;
+    line-height: 120%;
+    padding-left: $ruler-lg;
+    color:$color-grey;
+
+    @media screen and (max-width: $break-medium) {
+        padding-top: 0;
+        padding-bottom: $ruler-base;
+        position: relative;
+        top: -$ruler-base;
+    }
+
+    .icon {
+        position: relative;
+        margin-left: -$ruler-lg;
+        margin-right: $ruler-sm;
+        color:$color-sky;
+    }
+}

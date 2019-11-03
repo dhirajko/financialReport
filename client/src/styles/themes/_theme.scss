@@ -1,0 +1,226 @@
+a, .btn-link {
+    text-decoration: none !important;
+    &:not(.btn):hover {
+        color:$color-navy !important;
+    }
+}
+
+.btn {
+    &-primary, &-success {
+        background-color: $color-teal;
+        border-color: $color-teal;
+        &:hover, &:active, &:focus {
+            background-color: rgba($color-teal, 0.8) !important;
+            border-color: rgba($color-teal, 0.8) !important;
+            &:focus {
+                box-shadow: 0 0 0 0.2rem rgba($color-teal,.5) !important;
+            }
+        }
+    }
+    &-info {
+        background-color: $color-blue;
+        border-color: $color-blue;
+        &:hover, &:active, &:focus {
+            background-color: rgba($color-blue, 0.8) !important;
+            border-color: rgba($color-blue, 0.8) !important;
+        } 
+        &:focus {
+            box-shadow: 0 0 0 0.2rem rgba($color-blue,.5) !important;
+        }
+    }
+
+    &-notif:after {
+        content: "";
+        display: inline-block;
+        background-color: $color-red;
+        width:$ruler-sm;
+        height: $ruler-sm;
+        border-radius: 50%;
+        position: absolute;
+    }
+}
+
+.text {
+    &-info, &-primary {
+        color:$color-blue !important;
+    }
+}
+
+.nav {
+    a {
+        color:$color-blue;
+    }
+}
+
+
+
+header {
+    border-bottom: 1px solid $color-border;
+}
+
+
+.modal {
+    &-dialog {
+        margin: 0 auto;
+    }
+    &-content {
+        border: none;
+        border-radius: $ruler-base $ruler-base 0 0;
+    }
+
+    &-body {
+        height: auto;
+        overflow: scroll;
+
+    }
+}
+
+.close {
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    position: relative;
+    z-index: 100;
+    span {
+        width: $ruler-xl*2;
+        height: $ruler-ty;
+        border-radius: $ruler-sm;
+        margin-top: -$ruler-lg;
+        background-color: $color-grey;
+        display: inline-block;
+    }
+}
+
+
+
+.topbanner {
+    background-position: center;
+    background-size: cover;
+    background-color: $color-navy;
+
+    .card {
+        border: none;
+        border-radius: $ruler-sm $ruler-sm 0 0;
+        margin-top: $ruler-base;
+    }
+}
+
+.box {
+    border: 1px solid $color-border;
+    border-radius: $ruler-ty;
+}
+
+.progress, .progress-bar {
+    height:$ruler-ty/2;
+    border-radius: 0;
+    margin-bottom: $ruler-base;
+}
+
+
+.queue {
+    &-wrapper {
+        width: 420px;
+        z-index: 1000;
+        position: absolute;
+        right: $ruler-base;
+        margin-top: -$ruler-base;
+
+        @media screen and (max-width: $break-medium) {
+            width: 90%;
+            $right: 0;
+        }
+    }
+
+
+    &-empty {
+        padding: $ruler-lg 0;
+    }
+
+    &-overflow {
+        max-height: 250px;
+        overflow-y: auto;
+    }
+
+    &-item {
+        border-top: 1px solid $color-border;
+        padding: $ruler-base 0;
+
+        &:first-child {
+            padding-top: 0;
+            border-top: none;
+        }
+    }
+}
+
+.list-group-item {
+    &.active {
+        background-color: $color-navy;
+        border-color: $color-navy;
+        color:$color-white !important;
+        &:hover, &:active {
+            color:$color-white !important;
+        }
+    }
+}
+
+.linesep {
+    border-top: 2px solid $color-blue;
+    margin-top: $ruler-base;
+    padding-top: $ruler-sm;
+}
+
+.side-popover {
+    @media screen and (min-width: $break-large) {
+        position: absolute;
+        right:0;
+        max-width: 280px;
+        transform: translate3d(280px,-100px,0);
+    }
+    ul {
+        margin-left: $ruler-base;
+    }
+    li {
+        margin-bottom: 0.8rem;
+    }
+    .icon {
+        position: relative;
+        margin-left: -$ruler-base;
+    }
+    
+}
+
+
+
+.howitworks {
+    border-left: 1px solid $color-border;
+
+    .btn-link {
+        font-size: $ruler-base;
+        display: block;
+        padding-left: $ruler-lg !important;
+        margin-bottom: $ruler-base !important;
+
+        &.collapsed {
+            span {
+                background-color: $color-border;
+            }
+        }
+
+        span {
+            display: inline-block;
+            height: $ruler-lg;
+            width: $ruler-lg;
+            color: $color-white;
+            border-radius: 50%;
+            background-color: $color-teal;
+            position: absolute;
+            margin-left: -$ruler-lg*1.6;
+        }
+    }
+
+    p {
+        padding-left: $ruler-lg !important;
+        padding-bottom: $ruler-base !important;
+        transition: all 0.2s ease-in;
+    }
+}

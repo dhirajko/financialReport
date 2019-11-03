@@ -1,0 +1,27 @@
+.dim {
+    opacity: 0.6;
+}
+
+.btn {
+    &-sm {
+        border-radius: $ruler-xl*2;
+        padding: $ruler-sm $ruler-base;
+    }
+}
+
+
+.dot {
+    width: $ruler-base;
+    height: $ruler-base;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: $ruler-sm;
+    position: relative;
+    top: $ruler-ty;
+}
+
+.table-wrapper {
+    display: block;
+    overflow: auto;
+
+}

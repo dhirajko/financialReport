@@ -1,0 +1,136 @@
+    body, html {
+        margin: 0;
+        padding: 0;
+    }
+    h1,h2,h3,h4,h5,p {
+        margin: 0;
+    }
+    .table {
+        font-family: Arial, sans-serif;
+        width:100%;
+        font-size: 75%;
+        line-height: 90%;
+        border-collapse: collapse;
+        border-width: 1px;
+    }
+    .table-bordered td, .table-bordered th {
+        padding: 0 2px;
+    }
+    .table-bordered td{
+        border: 1px solid black;
+        vertical-align: top;
+    }
+    .table-bordered th {
+        text-align: left;
+        border-bottom: 3px solid black;
+    }
+
+    .text-right {
+        text-align: right !important;
+    }
+    .text-center {
+        text-align: center;
+    }
+    hr {
+       border: none;
+       border-bottom: 1px solid black;   
+   }
+
+   .lead {
+    text-transform: uppercase;
+}
+
+dt.total {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+dd.total {
+    font-size: 0.9rem;
+    padding-top: 8px;
+    font-weight: bold;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mr {
+    padding-right: 8px;
+}
+
+dl, dt, dd {
+    margin: 0;
+    padding:0;
+}
+
+dt,dd {
+    padding: 8px 0 4px 0;
+    letter-spacing: -0.5px;
+}
+
+.dfull {
+    float: none;
+    width:100%;
+    clear: both;
+}
+
+dt {
+    float: right;
+    font-weight: bold;
+    width:60%;
+    text-align: right;
+}
+
+dd {
+    float: left;
+    width: 40%;
+}
+
+
+
+.border {
+    border: 1px solid #000;
+    width: 20%;
+    height: 30px;
+}
+
+.border-top {
+    border-top: 2px solid #000;
+}
+
+.table-info p {
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0 !important;
+    padding: 0;
+}
+
+small.toc {
+    display: block;
+    line-height: 96% !important;
+    font-size: 9.5px;
+    margin-top: 4px;
+}
+
+.customer-section {
+    padding-top: 2px;
+    margin-top: 2px;
+}
+
+.inline-check {
+    display: inline-block;
+    border: 1px solid #000;
+    width: 8px;
+    height: 8px;
+    position: relative;
+    bottom: -2px;
+}
+
+.sign-sep {
+    margin-bottom: 4px;
+}
+
+hr.nomargin {
+    margin: 2px 0;
+}

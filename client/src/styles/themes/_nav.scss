@@ -1,0 +1,210 @@
+
+.body {
+    &-wrapper {
+        @media screen and (min-width: $break-large) {
+            @include flexify(flex-start, flex-start);
+        }
+
+        main {
+            // padding-bottom:$ruler-lg*3;
+
+            @media screen and (max-width: $break-small) {
+                padding-bottom: 128px;
+            }
+        }
+    }
+
+    &-aside {
+        @media screen and (min-width: $break-large) {
+            flex: 1 0 100px;        
+        }
+
+        @media screen and (max-width: $break-large) {
+            border-top: 1px solid $color-border;
+            position: fixed;
+            background-color: $color-white;
+            width:100%;
+            bottom: 0;
+            left: 0;
+            overflow: auto;
+            z-index: 100;
+            text-align: left;
+            @include flexify(center, flex-start);
+        }
+
+        a {
+            display: block;
+            flex: 0 0 28%;
+            text-align: center;
+            font-size: $ruler-base;
+            margin: $ruler-lg 0;
+            word-wrap: break-word;
+            @media screen and (max-width: $break-large) {
+                margin: $ruler-ty auto;
+            }
+
+            i {
+                display: block;
+                font-size: $ruler-lg;
+                margin-bottom: -$ruler-sm;
+            }
+
+            small {
+                display: inline-block;
+                margin-top: $ruler-sm;
+            }
+        }
+    }
+
+    &-main {
+        @media screen and (min-width: $break-large) {
+            flex: 1 1 calc(100% - 100px);
+            //border-left: 1px solid $color-border;
+        }
+    }
+
+}
+
+
+aside + .body-main {
+    border-left: 1px solid $color-border;
+}
+
+
+
+.progress-train {
+    border-bottom: 1px solid $color-border;
+    background-color: $color-light;
+
+
+    button, a {
+        background-color: transparent;
+        border: none;
+        appearance: none;
+        font-size: $ruler-base;
+        color:$color-grey;
+        text-decoration: none;
+        text-align: left;
+        flex: 1 0 25%;
+        
+
+        @media screen and (min-width: $break-large) {
+            @include flexify(center, flex-start);
+        }
+
+        @media screen and (max-width: $break-large) {
+            button, a {
+                text-align: center;
+            }
+            span {
+                display: block;
+                text-align: center;
+                margin-top: $ruler-sm;
+            }
+            .icon-text {
+                font-size: $ruler-sm*1.4;
+            }
+            .icon-wrapper{
+                margin: 0 auto !important;
+            }
+        }
+
+        &:hover:not(:disabled) {
+            color:$color-black;
+        }
+
+        .icon-wrapper {
+            @include flexify(center, center);
+            width:$ruler-lg*2;
+            height:$ruler-lg*2;
+            border-radius: 50%;
+            color:$color-grey;
+            background-color: $color-white;
+            margin-right:$ruler-sm;
+
+            @media screen and (max-width: $break-small) {
+                width:$ruler-lg*1.2;
+                height:$ruler-lg*1.2;
+            }
+        }
+
+        &.active .icon-wrapper {
+            background-color: $color-navy;
+            color:$color-white;
+            box-shadow: 0 0 0 0.2rem rgba($color-navy,.5) !important;
+        }
+
+        &.done .icon-wrapper {
+            background-color: $color-sky;
+            color:$color-navy;
+        }
+
+        &.active {
+            font-weight: bold;
+        }
+    }
+
+    &.interim {
+        color: $color-white;
+        a, button {
+            color:$color-white !important;
+            opacity: 0.7;
+            &:hover, &.done {
+                opacity: 1;
+            }
+        }
+        .icon-wrapper {
+            color: $color-white;
+        }
+    }
+
+}
+
+
+@media screen and (max-width: $break-large) {
+    .dp {
+        width:50%;
+    }
+}
+
+
+    .bottom-action  {
+        background-color: $color-white;
+        z-index: 1000;
+
+        @media screen and (min-width: $break-large) {
+            position: fixed;
+            width: calc(100% - 99px);
+            box-sizing: border-box;
+            bottom: 0;
+            border-top: 1px solid $color-border;
+        }
+
+        @media screen and (max-width: $break-large) {
+            border-bottom: 1px solid $color-border;
+        }
+    }
+
+
+.top-actions {
+    a{
+        &:hover {
+            color:$color-sky !important;
+            .icon-wrapper {
+                border-color: $color-sky;
+            }
+        }
+    }
+    .icon-wrapper {
+        @include flexify(center, center);
+        border: 2px solid $color-white;
+        width:$ruler-lg*2;
+        height:$ruler-lg*2;
+        border-radius: 50%;
+        margin: 0 auto;
+        .icon {
+            margin: 0;
+        }
+
+    }
+}
